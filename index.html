@@ -1,71 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Universal Social Media Finder</title>
+  <meta charset="UTF-8" />
+  <title>Email Validator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
-    body { font-family: Arial, sans-serif; background:#f4f8fc; padding:20px; }
-    .container { max-width:750px; margin:30px auto; background:#fff; padding:25px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1);}
-    h1 { text-align:center; color:#007bff; }
-    label { font-weight:bold; margin-top:10px; display:block; }
-    input { width:100%; padding:12px; margin:5px 0 15px; border:2px solid #ddd; border-radius:6px; font-size:16px; }
-    button { padding:12px 18px; margin:8px 0; border:none; border-radius:6px; cursor:pointer; font-size:16px; background:#007bff; color:white; width:100%; }
-    .results { margin-top:20px; padding:15px; background:#eef8ff; border-radius:6px; }
-    a { display:block; margin:6px 0; text-decoration:none; color:#007bff; }
-    a:hover { text-decoration:underline; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #e0f2fe, #f8fafc);
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 2rem 2.5rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.15);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 0.25rem;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .field-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .input-row input[type="email"] {
+      flex: 1;
+      padding: 0.7rem 0.9rem;
+      border-radius: 0.75rem;
+      border: 1px solid #cbd5f5;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-row input[type="email"]:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+    }
+
+    button {
+      padding: 0.7rem 1.3rem;
+      border-radius: 0.75rem;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      color: #ffffff;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease,
+        filter 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.45);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-bottom: 0.85rem;
+    }
+
+    .result {
+      min-height: 1.5rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.25rem;
+    }
+
+    .result span.icon {
+      font-size: 1.1rem;
+    }
+
+    .result.valid {
+      color: #15803d;
+    }
+
+    .result.invalid {
+      color: #b91c1c;
+    }
+
+    .result.neutral {
+      color: #64748b;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.55rem;
+      font-size: 0.72rem;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #2563eb;
+      margin: 0 auto 1.1rem auto;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #2563eb;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🔎 Universal Social Media Finder</h1>
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Live email format check
+    </div>
 
-    <label>Full Name</label>
-    <input type="text" id="name" placeholder="e.g. John Doe">
+    <h1 class="title">Email Validator</h1>
+    <p class="subtitle">Check if an email address is in a valid format.</p>
 
-    <label>Location</label>
-    <input type="text" id="location" placeholder="e.g. New York">
+    <label class="field-label" for="emailInput">Email address</label>
 
-    <label>Career / Profession</label>
-    <input type="text" id="career" placeholder="e.g. Software Engineer">
+    <div class="input-row">
+      <input
+        id="emailInput"
+        type="email"
+        placeholder="name@example.com"
+        autocomplete="off"
+      />
+      <button type="button" onclick="validateEmail()">Validate</button>
+    </div>
 
-    <label>Current Company</label>
-    <input type="text" id="company" placeholder="e.g. Google">
+    <p class="hint">
+      We only check the <strong>format</strong> (name@domain.com), not whether
+      the email actually exists.
+    </p>
 
-    <button onclick="findProfiles()">Find Profiles</button>
-
-    <div class="results" id="results" style="display:none;"></div>
+    <div id="result" class="result neutral">
+      <span class="icon">ℹ️</span>
+      <span>Enter an email and click “Validate”.</span>
+    </div>
   </div>
 
-<script>
-function findProfiles() {
-  const name = document.getElementById("name").value.trim();
-  const location = document.getElementById("location").value.trim();
-  const career = document.getElementById("career").value.trim();
-  const company = document.getElementById("company").value.trim();
+  <script>
+    function isValidEmailFormat(email) {
+      // Simple, practical regex for basic email format validation
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(String(email).toLowerCase());
+    }
 
-  if (!name) return alert("Please enter at least a name");
+    function validateEmail() {
+      const input = document.getElementById("emailInput");
+      const result = document.getElementById("result");
+      const value = input.value.trim();
 
-  const query = `"${name}" "${location}" "${career}" "${company}"`;
+      if (!value) {
+        result.className = "result invalid";
+        result.innerHTML =
+          '<span class="icon">❗</span><span>Please enter an email address.</span>';
+        return;
+      }
 
-  const searches = {
-    "LinkedIn": `https://www.google.com/search?q=${encodeURIComponent(query + ' site:linkedin.com/in')}`,
-    "Facebook": `https://www.google.com/search?q=${encodeURIComponent(query + ' site:facebook.com')}`,
-    "Twitter/X": `https://www.google.com/search?q=${encodeURIComponent(query + ' site:twitter.com')}`,
-    "Instagram": `https://www.google.com/search?q=${encodeURIComponent(query + ' site:instagram.com')}`,
-    "Threads": `https://www.google.com/search?q=${encodeURIComponent(query + ' site:threads.net')}`,
-    "Bluesky": `https://www.google.com/search?q=${encodeURIComponent(query + ' site:bsky.app')}`,
-    "YouTube": `https://www.google.com/search?q=${encodeURIComponent(query + ' site:youtube.com')}`
-  };
+      if (isValidEmailFormat(value)) {
+        result.className = "result valid";
+        result.innerHTML =
+          '<span class="icon">✅</span><span>This looks like a valid email format.</span>';
+      } else {
+        result.className = "result invalid";
+        result.innerHTML =
+          '<span class="icon">⛔</span><span>This email is not in a valid format.</span>';
+      }
+    }
 
-  let html = "<h3>🔗 Search Results</h3>";
-  for (const [platform, url] of Object.entries(searches)) {
-    html += `<a href="${url}" target="_blank">Search on ${platform}</a>`;
-  }
+    // Optional: validate live while typing
+    document
+      .getElementById("emailInput")
+      .addEventListener("input", function () {
+        const value = this.value.trim();
+        const result = document.getElementById("result");
 
-  document.getElementById("results").style.display = "block";
-  document.getElementById("results").innerHTML = html;
-}
-</script>
+        if (!value) {
+          result.className = "result neutral";
+          result.innerHTML =
+            '<span class="icon">ℹ️</span><span>Enter an email and click “Validate”.</span>';
+          return;
+        }
+
+        if (isValidEmailFormat(value)) {
+          result.className = "result valid";
+          result.innerHTML =
+            '<span class="icon">✅</span><span>Valid email format.</span>';
+        } else {
+          result.className = "result invalid";
+          result.innerHTML =
+            '<span class="icon">⚠️</span><span>Still not a valid format.</span>';
+        }
+      });
+
+    // Enter key triggers validation
+    document
+      .getElementById("emailInput")
+      .addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          validateEmail();
+        }
+      });
+  </script>
 </body>
 </html>
